@@ -17,11 +17,11 @@ searched and filtered, and are served through a paginated feed.
 - [ ] Comments
 - [ ] Likes
 - [x] Following authors
-- [ ] Article search
+- [x] Article search
 - [x] User search
 - [x] Categories and tags
-- [ ] Sorting and filtering
-- [ ] Feed of the latest publications
+- [x] Sorting and filtering
+- [x] Feed of the latest publications
 
 ## Getting Started
 

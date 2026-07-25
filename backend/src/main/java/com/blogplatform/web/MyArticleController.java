@@ -36,4 +36,12 @@ public class MyArticleController {
 					direction = Sort.Direction.DESC) Pageable pageable) {
 		return articleService.myArticles(principal.getId(), pageable);
 	}
+
+	/** The reader's timeline: published articles by the authors they follow. */
+	@GetMapping("/feed")
+	public PageResponse<ArticleSummaryResponse> feed(
+			@AuthenticationPrincipal AppUserDetails principal,
+			@PageableDefault(size = 10) Pageable pageable) {
+		return articleService.feed(principal.getId(), pageable);
+	}
 }
