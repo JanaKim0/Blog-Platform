@@ -1,0 +1,119 @@
+<section class="comments">
+  <h2>
+    Comments
+    @if (page(); as result) {
+      <span class="muted">({{ result.totalElements }})</span>
+    }
+  </h2>
+
+  @if (error()) {
+    <p class="form-error" role="alert">{{ error() }}</p>
+  }
+
+  @if (auth.isSignedIn()) {
+    <form class="new-comment" (ngSubmit)="submit()">
+      <label class="visually-hidden" for="new-comment">Your comment</label>
+      <textarea
+        id="new-comment"
+        class="textarea"
+        name="newComment"
+        rows="3"
+        maxlength="2000"
+        placeholder="Say something about this article…"
+        [(ngModel)]="newComment"
+      ></textarea>
+      <button class="btn" type="submit" [disabled]="posting() || !newComment.trim()">
+        {{ posting() ? 'Posting…' : 'Post comment' }}
+      </button>
+    </form>
+  } @else {
+    <p class="sign-in-prompt muted">
+      <a routerLink="/login">Sign in</a> to join the discussion.
+    </p>
+  }
+
+  @if (loading()) {
+    <p class="empty">Loading comments…</p>
+  } @else if (page(); as result) {
+    @if (result.content.length === 0) {
+      <p class="empty">No comments yet. Be the first.</p>
+    } @else {
+      <ul class="comment-list">
+        @for (comment of result.content; track comment.id) {
+          <li class="comment">
+            <app-avatar
+              size="sm"
+              [url]="comment.author.avatarUrl"
+              [name]="comment.author.displayName"
+            />
+
+            <div class="comment-body">
+              <div class="comment-head">
+                <span class="comment-author">{{ comment.author.displayName }}</span>
+                <time class="small muted" [attr.datetime]="comment.createdAt">
+                  {{ comment.createdAt | date: 'medium' }}
+                </time>
+                @if (comment.edited) {
+                  <span class="small muted">· edited</span>
+                }
+              </div>
+
+              @if (editingId() === comment.id) {
+                <div class="editing">
+                  <label class="visually-hidden" [attr.for]="'edit-' + comment.id">
+                    Edit your comment
+                  </label>
+                  <textarea
+                    [attr.id]="'edit-' + comment.id"
+                    class="textarea"
+                    rows="3"
+                    maxlength="2000"
+                    [(ngModel)]="editingText"
+                    [ngModelOptions]="{ standalone: true }"
+                  ></textarea>
+                  <div class="row">
+                    <button class="btn btn-sm" type="button" (click)="saveEditing(comment)">
+                      Save
+                    </button>
+                    <button
+                      class="btn btn-ghost btn-sm"
+                      type="button"
+                      (click)="cancelEditing()"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              } @else {
+                <p class="comment-text">{{ comment.content }}</p>
+
+                @if (canEdit(comment) || canDelete(comment)) {
+                  <div class="comment-actions">
+                    @if (canEdit(comment)) {
+                      <button class="link-button" type="button" (click)="startEditing(comment)">
+                        Edit
+                      </button>
+                    }
+                    @if (canDelete(comment)) {
+                      <button class="link-button danger" type="button" (click)="remove(comment)">
+                        Delete
+                      </button>
+                    }
+                  </div>
+                }
+              }
+            </div>
+          </li>
+        }
+      </ul>
+
+      <app-pagination
+        [page]="result.page"
+        [totalPages]="result.totalPages"
+        [first]="result.first"
+        [last]="result.last"
+        (pageChange)="goToPage($event)"
+      />
+    }
+  }
+</section>

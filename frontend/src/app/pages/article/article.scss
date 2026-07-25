@@ -1,0 +1,124 @@
+@use 'theme' as *;
+
+.article {
+  max-width: $reading-width;
+  margin: 0 auto;
+  padding: $space-6;
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: $radius-lg;
+  box-shadow: $shadow;
+}
+
+.draft-notice {
+  padding: $space-3 $space-4;
+  margin: 0 0 $space-5;
+  border: 1px dashed $border-strong;
+  border-radius: $radius-sm;
+  background: $surface-alt;
+  color: $primary-ink;
+  font-size: 0.9rem;
+}
+
+.article-header h1 {
+  margin: $space-3 0;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+}
+
+.summary {
+  font-size: 1.125rem;
+}
+
+.byline {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $space-3;
+  padding-bottom: $space-5;
+  border-bottom: 1px solid $border;
+}
+
+.author {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  color: $text;
+  font-weight: 600;
+
+  &:hover {
+    text-decoration: none;
+    color: $primary-ink;
+  }
+}
+
+.cover {
+  width: 100%;
+  margin: $space-5 0;
+  border-radius: $radius;
+}
+
+.content {
+  /* The body is plain text, so the author's own line breaks and blank lines are
+     what shapes it. Rendering it as HTML would mean trusting user input. */
+  white-space: pre-wrap;
+  margin: $space-5 0;
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+  margin: $space-5 0;
+}
+
+.reactions {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  padding-top: $space-5;
+  border-top: 1px solid $border;
+}
+
+.like {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  padding: 0.45rem 1.1rem;
+  border: 1px solid $border-strong;
+  border-radius: $radius-pill;
+  background: $surface;
+  color: $text-muted;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+
+  &:hover:not(:disabled) {
+    background: $surface-alt;
+    color: $primary-ink;
+  }
+
+  &.liked {
+    background: $primary;
+    border-color: $primary;
+    color: $on-primary;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: progress;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $primary-ink;
+    outline-offset: 2px;
+  }
+}
+
+@media (max-width: 640px) {
+  .article {
+    padding: $space-4;
+  }
+}

@@ -1,0 +1,66 @@
+<article class="card article-card">
+  @if (article().coverUrl) {
+    <a class="cover" [routerLink]="['/articles', article().slug]">
+      <img [src]="article().coverUrl" [alt]="article().title" loading="lazy" />
+    </a>
+  }
+
+  <div class="body">
+    <div class="meta">
+      @if (article().category) {
+        <span class="badge">{{ article().category!.name }}</span>
+      }
+      @if (showStatus() && article().status === 'DRAFT') {
+        <span class="badge draft">Draft</span>
+      }
+      @if (article().publishedAt) {
+        <time class="small muted" [attr.datetime]="article().publishedAt">
+          {{ article().publishedAt | date: 'mediumDate' }}
+        </time>
+      } @else {
+        <span class="small muted">Not published yet</span>
+      }
+    </div>
+
+    <h3 class="title">
+      <a [routerLink]="['/articles', article().slug]">{{ article().title }}</a>
+    </h3>
+
+    @if (article().summary) {
+      <p class="summary muted">{{ article().summary }}</p>
+    }
+
+    @if (article().tags.length) {
+      <div class="tags">
+        @for (tag of article().tags; track tag.id) {
+          <a class="badge badge-plain" [routerLink]="['/']" [queryParams]="{ tag: tag.slug }">
+            #{{ tag.name }}
+          </a>
+        }
+      </div>
+    }
+
+    <footer class="card-footer">
+      <!-- Filters the feed by this author. Stage 12 points it at their profile. -->
+      <a
+        class="author"
+        [routerLink]="['/']"
+        [queryParams]="{ author: article().author.username }"
+      >
+        <app-avatar
+          size="sm"
+          [url]="article().author.avatarUrl"
+          [name]="article().author.displayName"
+        />
+        <span>{{ article().author.displayName }}</span>
+      </a>
+
+      <div class="counts small muted">
+        <span [class.liked]="article().likedByMe" [attr.title]="'Likes'">
+          {{ article().likedByMe ? '♥' : '♡' }} {{ article().likesCount }}
+        </span>
+        <span [attr.title]="'Comments'">💬 {{ article().commentsCount }}</span>
+      </div>
+    </footer>
+  </div>
+</article>

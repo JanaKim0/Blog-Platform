@@ -1,0 +1,101 @@
+<div class="container page">
+  @if (loading()) {
+    <p class="empty">Loading…</p>
+  } @else if (notFound()) {
+    <div class="empty">
+      <h1>Article not found</h1>
+      <p>It may have been removed, or it was never published.</p>
+      <a class="btn btn-secondary" routerLink="/">Back to the latest articles</a>
+    </div>
+  } @else if (article(); as post) {
+    <article class="article">
+      @if (post.status === 'DRAFT') {
+        <p class="draft-notice">
+          This is a draft. Only you can see it until you publish it.
+        </p>
+      }
+
+      <header class="article-header">
+        @if (post.category) {
+          <a
+            class="badge"
+            [routerLink]="['/']"
+            [queryParams]="{ category: post.category.slug }"
+          >
+            {{ post.category.name }}
+          </a>
+        }
+
+        <h1>{{ post.title }}</h1>
+
+        @if (post.summary) {
+          <p class="summary muted">{{ post.summary }}</p>
+        }
+
+        <div class="byline">
+          <a class="author" [routerLink]="['/']" [queryParams]="{ author: post.author.username }">
+            <app-avatar [url]="post.author.avatarUrl" [name]="post.author.displayName" />
+            <span class="author-name">{{ post.author.displayName }}</span>
+          </a>
+          <span class="small muted">
+            @if (post.publishedAt) {
+              <time [attr.datetime]="post.publishedAt">
+                {{ post.publishedAt | date: 'longDate' }}
+              </time>
+            } @else {
+              Not published yet
+            }
+          </span>
+        </div>
+      </header>
+
+      @if (post.coverUrl) {
+        <img class="cover" [src]="post.coverUrl" [alt]="post.title" />
+      }
+
+      <!-- Bound as text, never as HTML: an article body is user input, and the
+           line breaks are preserved with CSS instead. -->
+      <div class="content">{{ post.content }}</div>
+
+      @if (post.tags.length) {
+        <div class="tags">
+          @for (tag of post.tags; track tag.id) {
+            <a class="badge badge-plain" [routerLink]="['/']" [queryParams]="{ tag: tag.slug }">
+              #{{ tag.name }}
+            </a>
+          }
+        </div>
+      }
+
+      @if (error()) {
+        <p class="form-error" role="alert">{{ error() }}</p>
+      }
+
+      <div class="reactions">
+        <button
+          type="button"
+          class="like"
+          [class.liked]="post.likedByMe"
+          [disabled]="liking()"
+          (click)="toggleLike()"
+          [attr.aria-pressed]="post.likedByMe"
+        >
+          <span aria-hidden="true">{{ post.likedByMe ? '♥' : '♡' }}</span>
+          {{ post.likesCount }}
+          {{ post.likesCount === 1 ? 'like' : 'likes' }}
+        </button>
+        <span class="small muted">
+          {{ post.commentsCount }} {{ post.commentsCount === 1 ? 'comment' : 'comments' }}
+        </span>
+      </div>
+    </article>
+
+    <app-comments
+      [slug]="post.slug"
+      [articleAuthorId]="post.author.id"
+      (countChange)="onCommentCountChange($event)"
+    />
+  } @else if (error()) {
+    <p class="form-error" role="alert">{{ error() }}</p>
+  }
+</div>

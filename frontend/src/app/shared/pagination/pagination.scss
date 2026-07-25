@@ -1,0 +1,14 @@
+@use 'theme' as *;
+
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-4;
+  margin-top: $space-6;
+}
+
+.pager-status {
+  min-width: 8rem;
+  text-align: center;
+}

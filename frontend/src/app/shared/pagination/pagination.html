@@ -1,0 +1,18 @@
+@if (visible()) {
+  <nav class="pager" aria-label="Pagination">
+    <button
+      type="button"
+      class="btn btn-secondary btn-sm"
+      [disabled]="first()"
+      (click)="previous()"
+    >
+      ← Previous
+    </button>
+
+    <span class="pager-status small muted">Page {{ humanPage() }} of {{ totalPages() }}</span>
+
+    <button type="button" class="btn btn-secondary btn-sm" [disabled]="last()" (click)="next()">
+      Next →
+    </button>
+  </nav>
+}

@@ -1,21 +1,138 @@
 <div class="container page">
-  <section class="hero">
-    @if (auth.isSignedIn()) {
-      <h1>Hello, {{ auth.currentUser()?.displayName }}</h1>
-      <p class="muted">
-        You are signed in. The reading feed, the editor and your profile arrive in the
-        stages that follow.
-      </p>
-    } @else {
+  @if (!auth.isSignedIn()) {
+    <section class="hero">
       <h1>Write something worth reading</h1>
       <p class="lead muted">
-        A place to publish your own articles, read other people's blogs, follow the
-        authors you like and talk about what they wrote.
+        A place to publish your own articles, read other people's blogs, follow the authors
+        you like and talk about what they wrote.
       </p>
       <div class="hero-actions">
         <a class="btn" routerLink="/register">Create an account</a>
         <a class="btn btn-secondary" routerLink="/login">Sign in</a>
       </div>
+    </section>
+  }
+
+  <section class="feed">
+    <header class="feed-header">
+      <h2>
+        @if (author()) {
+          Articles by {{ author() }}
+        } @else if (query()) {
+          Results for “{{ query() }}”
+        } @else {
+          Latest publications
+        }
+      </h2>
+
+      <form class="search" (ngSubmit)="search()">
+        <label class="visually-hidden" for="search">Search articles</label>
+        <input
+          id="search"
+          class="input"
+          type="search"
+          name="search"
+          placeholder="Search articles…"
+          [(ngModel)]="searchText"
+        />
+        <button class="btn btn-sm" type="submit">Search</button>
+      </form>
+    </header>
+
+    <div class="filters">
+      <div class="filter-group" role="group" aria-label="Sort articles">
+        <button
+          type="button"
+          class="chip"
+          [class.selected]="sortBy() === 'RECENT'"
+          (click)="selectSort('RECENT')"
+        >
+          Newest
+        </button>
+        <button
+          type="button"
+          class="chip"
+          [class.selected]="sortBy() === 'LIKES'"
+          (click)="selectSort('LIKES')"
+        >
+          Most liked
+        </button>
+        <button
+          type="button"
+          class="chip"
+          [class.selected]="sortBy() === 'COMMENTS'"
+          (click)="selectSort('COMMENTS')"
+        >
+          Most discussed
+        </button>
+      </div>
+
+      @if (categories().length) {
+        <div class="filter-group" role="group" aria-label="Filter by category">
+          @for (option of categories(); track option.id) {
+            <button
+              type="button"
+              class="chip"
+              [class.selected]="category() === option.slug"
+              (click)="selectCategory(option.slug)"
+            >
+              {{ option.name }}
+            </button>
+          }
+        </div>
+      }
+
+      @if (tag()) {
+        <div class="filter-group" role="group" aria-label="Active tag">
+          <button type="button" class="chip selected" (click)="selectTag(null)">
+            #{{ tag() }} ✕
+          </button>
+        </div>
+      }
+
+      @if (hasFilters()) {
+        <button type="button" class="btn btn-ghost btn-sm" (click)="clearFilters()">
+          Clear filters
+        </button>
+      }
+    </div>
+
+    @if (error()) {
+      <p class="form-error" role="alert">{{ error() }}</p>
+    }
+
+    @if (loading()) {
+      <p class="empty">Loading articles…</p>
+    } @else if (page(); as result) {
+      @if (result.content.length === 0) {
+        <div class="empty">
+          @if (hasFilters()) {
+            <p>Nothing matches those filters.</p>
+            <button type="button" class="btn btn-secondary btn-sm" (click)="clearFilters()">
+              Clear filters
+            </button>
+          } @else {
+            <p>No articles have been published yet.</p>
+            @if (auth.isSignedIn()) {
+              <p class="small">Yours could be the first one.</p>
+            }
+          }
+        </div>
+      } @else {
+        <div class="grid">
+          @for (article of result.content; track article.id) {
+            <app-article-card [article]="article" />
+          }
+        </div>
+
+        <app-pagination
+          [page]="result.page"
+          [totalPages]="result.totalPages"
+          [first]="result.first"
+          [last]="result.last"
+          (pageChange)="goToPage($event)"
+        />
+      }
     }
   </section>
 </div>

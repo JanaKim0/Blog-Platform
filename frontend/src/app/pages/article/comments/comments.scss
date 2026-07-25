@@ -1,0 +1,105 @@
+@use 'theme' as *;
+
+.comments {
+  max-width: $reading-width;
+  margin: $space-6 auto 0;
+  padding: $space-6;
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-sm;
+}
+
+.new-comment {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: $space-3;
+  margin-bottom: $space-5;
+}
+
+.sign-in-prompt {
+  margin-bottom: $space-5;
+}
+
+.comment-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+}
+
+.comment {
+  display: flex;
+  gap: $space-3;
+}
+
+.comment-body {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.comment-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+.comment-author {
+  font-weight: 600;
+}
+
+.comment-text {
+  /* The commenter's own line breaks are kept; the text is never HTML. */
+  white-space: pre-wrap;
+  margin: $space-1 0 0;
+}
+
+.comment-actions {
+  display: flex;
+  gap: $space-3;
+  margin-top: $space-2;
+}
+
+.editing {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  margin-top: $space-2;
+}
+
+/* A button that reads as a link: these are secondary actions and full buttons
+   next to every comment would shout. */
+.link-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: $text-muted;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    color: $primary-ink;
+    text-decoration: underline;
+  }
+
+  &.danger:hover {
+    color: $danger;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $primary-ink;
+    outline-offset: 2px;
+  }
+}
+
+@media (max-width: 640px) {
+  .comments {
+    padding: $space-4;
+  }
+}

@@ -1,0 +1,7 @@
+@if (url()) {
+  <!-- Decorative: the name is always written next to it, so repeating it here
+       would only make a screen reader say it twice. -->
+  <img class="avatar-image" [src]="url()" alt="" />
+} @else {
+  <span class="avatar-initial" aria-hidden="true">{{ initial() }}</span>
+}

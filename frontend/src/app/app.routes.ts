@@ -13,6 +13,12 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/home/home').then((m) => m.Home),
   },
   {
+    // The title is replaced with the article's own once it loads.
+    path: 'articles/:slug',
+    title: 'Article · Blog Platform',
+    loadComponent: () => import('./pages/article/article').then((m) => m.Article),
+  },
+  {
     path: 'login',
     title: 'Sign in · Blog Platform',
     canActivate: [guestGuard],

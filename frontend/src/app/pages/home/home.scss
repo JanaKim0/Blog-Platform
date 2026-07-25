@@ -3,7 +3,7 @@
 .hero {
   max-width: $reading-width;
   margin: 0 auto;
-  padding: $space-7 0;
+  padding: $space-6 0 $space-7;
   text-align: center;
 
   h1 {
@@ -21,4 +21,93 @@
   flex-wrap: wrap;
   gap: $space-3;
   margin-top: $space-5;
+}
+
+.feed-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: $space-4;
+  margin-bottom: $space-4;
+
+  h2 {
+    margin: 0;
+  }
+}
+
+.search {
+  display: flex;
+  gap: $space-2;
+  min-width: 0;
+
+  .input {
+    width: 16rem;
+    max-width: 100%;
+  }
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $space-4;
+  padding: $space-3 $space-4;
+  margin-bottom: $space-5;
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: $radius-lg;
+}
+
+.filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+/* A chip is a filter toggle: quiet when off, clearly filled when on, so the
+   active filters can be read at a glance. */
+.chip {
+  padding: 0.25rem 0.8rem;
+  border: 1px solid $border;
+  border-radius: $radius-pill;
+  background: $surface;
+  color: $text-muted;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+
+  &:hover {
+    background: $surface-alt;
+    color: $primary-ink;
+  }
+
+  &.selected {
+    background: $primary;
+    border-color: $primary;
+    color: $on-primary;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $primary-ink;
+    outline-offset: 2px;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: $space-4;
+}
+
+@media (max-width: 640px) {
+  .search .input {
+    width: 100%;
+  }
+
+  .search {
+    width: 100%;
+  }
 }
