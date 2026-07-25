@@ -93,5 +93,8 @@ The backend is a stateless REST API: the browser authenticates once and then
 sends a JWT in the `Authorization` header with every request. The Angular app is
 a separate single-page application that talks to the API over HTTP.
 
-A detailed description of the layers, the database schema and the API endpoints
-is added as the project grows.
+The database schema and the reasoning behind it are documented in
+[docs/DATABASE.md](docs/DATABASE.md).
+
+A detailed description of the layers and the API endpoints is added as the
+project grows.
