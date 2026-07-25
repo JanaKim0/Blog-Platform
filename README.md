@@ -14,8 +14,8 @@ searched and filtered, and are served through a paginated feed.
 - [x] User profile and profile editing
 - [x] Creating, editing and deleting articles
 - [x] Image upload (article covers, avatars)
-- [ ] Comments
-- [ ] Likes
+- [x] Comments
+- [x] Likes
 - [x] Following authors
 - [x] Article search
 - [x] User search

@@ -49,11 +49,13 @@ public class ArticleService {
 	private final TagService tagService;
 	private final ImageStorageService imageStorage;
 	private final ArticleAssembler assembler;
+	private final ArticleLookup lookup;
 
 	public ArticleService(ArticleRepository articles, UserRepository users,
 			CommentRepository comments, ArticleLikeRepository likes,
 			SubscriptionRepository subscriptions, CategoryService categoryService,
-			TagService tagService, ImageStorageService imageStorage, ArticleAssembler assembler) {
+			TagService tagService, ImageStorageService imageStorage, ArticleAssembler assembler,
+			ArticleLookup lookup) {
 		this.articles = articles;
 		this.users = users;
 		this.comments = comments;
@@ -63,6 +65,7 @@ public class ArticleService {
 		this.tagService = tagService;
 		this.imageStorage = imageStorage;
 		this.assembler = assembler;
+		this.lookup = lookup;
 	}
 
 	@Transactional
@@ -75,18 +78,10 @@ public class ArticleService {
 		return assembler.toResponse(save(article), authorId);
 	}
 
-	/**
-	 * Reads one article. Drafts answer 404 for everyone but their author - a 403
-	 * would confirm that the article exists, which is exactly what a draft should
-	 * not do.
-	 */
+	/** Reads one article, with the draft visibility rules from {@link ArticleLookup}. */
 	@Transactional(readOnly = true)
 	public ArticleResponse getBySlug(String slug, Long currentUserId) {
-		Article article = requireBySlug(slug);
-		if (!article.isPublished() && !isAuthor(article, currentUserId)) {
-			throw new ResourceNotFoundException("No article at " + slug);
-		}
-		return assembler.toResponse(article, currentUserId);
+		return assembler.toResponse(lookup.requireVisible(slug, currentUserId), currentUserId);
 	}
 
 	/**
@@ -265,18 +260,14 @@ public class ArticleService {
 		return candidate;
 	}
 
+	/** Editing needs the article whatever its status; ownership is checked next. */
 	private Article requireBySlug(String slug) {
-		return articles.findBySlug(slug)
-				.orElseThrow(() -> new ResourceNotFoundException("No article at " + slug));
+		return lookup.require(slug);
 	}
 
 	private void requireCanModify(Article article, Long currentUserId, boolean admin) {
-		if (!admin && !isAuthor(article, currentUserId)) {
+		if (!admin && !lookup.isAuthor(article, currentUserId)) {
 			throw new AccessDeniedException("Only the author can change this article");
 		}
-	}
-
-	private boolean isAuthor(Article article, Long userId) {
-		return userId != null && article.getAuthor().getId().equals(userId);
 	}
 }
