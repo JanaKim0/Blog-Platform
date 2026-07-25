@@ -7,6 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface ArticleRepository extends JpaRepository<Article, Long> {
 
@@ -27,4 +30,12 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 	Page<Article> findByAuthorId(Long authorId, Pageable pageable);
 
 	long countByAuthorIdAndStatus(Long authorId, ArticleStatus status);
+
+	/**
+	 * Detaches every article from a category that is being deleted. The articles
+	 * stay; they simply become uncategorised.
+	 */
+	@Modifying(flushAutomatically = true, clearAutomatically = true)
+	@Query("update Article a set a.category = null where a.category.id = :categoryId")
+	void clearCategory(@Param("categoryId") Long categoryId);
 }

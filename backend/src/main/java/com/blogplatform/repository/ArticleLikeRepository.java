@@ -25,4 +25,13 @@ public interface ArticleLikeRepository extends JpaRepository<ArticleLike, Long> 
 	@Query("select l.article.id from ArticleLike l where l.user.id = :userId and l.article.id in :articleIds")
 	List<Long> findLikedArticleIds(@Param("userId") Long userId,
 			@Param("articleIds") Collection<Long> articleIds);
+
+	/** Like counts for a whole page of articles in one query. */
+	@Query("""
+			select new com.blogplatform.repository.IdCount(l.article.id, count(l))
+			from ArticleLike l
+			where l.article.id in :articleIds
+			group by l.article.id
+			""")
+	List<IdCount> countByArticleIds(@Param("articleIds") Collection<Long> articleIds);
 }

@@ -73,6 +73,9 @@ public class SecurityConfig {
 						// Reading the blog is public; writing is not.
 						.requestMatchers(HttpMethod.GET, "/api/articles/**", "/api/categories/**",
 								"/api/tags/**", "/api/users/**").permitAll()
+						// The category list is curated, not user-generated.
+						.requestMatchers(HttpMethod.POST, "/api/categories").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.DELETE, "/api/categories/**").hasRole("ADMIN")
 						.requestMatchers("/uploads/**", "/error").permitAll()
 						.requestMatchers("/h2-console/**").permitAll()
 						.anyRequest().authenticated())

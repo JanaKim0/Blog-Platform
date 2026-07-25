@@ -32,6 +32,12 @@ public class AppUserDetails implements UserDetails {
 		return id;
 	}
 
+	/** Administrators may edit and remove other people's articles. */
+	public boolean isAdmin() {
+		return authorities.stream()
+				.anyMatch(authority -> "ROLE_ADMIN".equals(authority.getAuthority()));
+	}
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
