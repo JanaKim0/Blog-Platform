@@ -11,14 +11,14 @@ searched and filtered, and are served through a paginated feed.
 ## Features
 
 - [x] Registration and login (stateless JWT)
-- [ ] User profile and profile editing
+- [x] User profile and profile editing
 - [ ] Creating, editing and deleting articles
 - [ ] Image upload (article covers, avatars)
 - [ ] Comments
 - [ ] Likes
 - [ ] Following authors
 - [ ] Article search
-- [ ] User search
+- [x] User search
 - [ ] Categories and tags
 - [ ] Sorting and filtering
 - [ ] Feed of the latest publications
