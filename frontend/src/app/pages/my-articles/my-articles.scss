@@ -1,0 +1,32 @@
+@use 'theme' as *;
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: $space-3;
+  margin-bottom: $space-5;
+
+  h1 {
+    margin: 0;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: $space-4;
+}
+
+/* The Edit button belongs to the author's view, not to the card itself, so it
+   sits beside the card rather than inside it. */
+.own-article {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.edit {
+  align-self: flex-start;
+}

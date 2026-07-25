@@ -1,0 +1,44 @@
+<div class="container page">
+  <header class="head">
+    <h1>My articles</h1>
+    <a class="btn" routerLink="/write">Write an article</a>
+  </header>
+
+  @if (error()) {
+    <p class="form-error" role="alert">{{ error() }}</p>
+  }
+
+  @if (loading()) {
+    <p class="empty">Loading…</p>
+  } @else if (page(); as result) {
+    @if (result.content.length === 0) {
+      <div class="empty">
+        <p>You have not written anything yet.</p>
+        <a class="btn btn-secondary" routerLink="/write">Start your first article</a>
+      </div>
+    } @else {
+      <div class="grid">
+        @for (article of result.content; track article.id) {
+          <div class="own-article">
+            <!-- showStatus marks drafts; on the public feed there are none. -->
+            <app-article-card [article]="article" [showStatus]="true" />
+            <a
+              class="btn btn-secondary btn-sm edit"
+              [routerLink]="['/articles', article.slug, 'edit']"
+            >
+              Edit
+            </a>
+          </div>
+        }
+      </div>
+
+      <app-pagination
+        [page]="result.page"
+        [totalPages]="result.totalPages"
+        [first]="result.first"
+        [last]="result.last"
+        (pageChange)="load($event)"
+      />
+    }
+  }
+</div>

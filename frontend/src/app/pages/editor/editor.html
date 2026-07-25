@@ -1,0 +1,164 @@
+<div class="container page">
+  <div class="panel editor">
+    <header class="editor-head">
+      <h1>{{ editing() ? 'Edit article' : 'Write an article' }}</h1>
+      @if (editing()) {
+        <a class="btn btn-ghost btn-sm" [routerLink]="['/articles', slug()]">View article</a>
+      }
+    </header>
+
+    @if (loading()) {
+      <p class="empty">Loading…</p>
+    } @else {
+      <form class="stack" [formGroup]="form" (ngSubmit)="save()" novalidate>
+        @if (error()) {
+          <p class="form-error" role="alert">{{ error() }}</p>
+        }
+
+        <div class="field">
+          <label for="title">Title</label>
+          <input
+            id="title"
+            class="input"
+            type="text"
+            maxlength="200"
+            formControlName="title"
+            [class.invalid]="form.controls.title.touched && form.controls.title.invalid"
+          />
+          @if (form.controls.title.touched && form.controls.title.invalid) {
+            <span class="field-error">A title is required</span>
+          }
+          @if (serverFieldErrors()['title']) {
+            <span class="field-error">{{ serverFieldErrors()['title'] }}</span>
+          }
+          @if (editing()) {
+            <span class="muted small">
+              The web address of the article was made from its first title and stays as it is,
+              so links to it keep working.
+            </span>
+          }
+        </div>
+
+        <div class="field">
+          <label for="summary">Summary <span class="muted small">(optional)</span></label>
+          <input
+            id="summary"
+            class="input"
+            type="text"
+            maxlength="500"
+            placeholder="One line that makes someone want to read it"
+            formControlName="summary"
+          />
+          <span class="muted small">Shown on the cards in the feed.</span>
+        </div>
+
+        <div class="field">
+          <label for="content">Article</label>
+          <textarea
+            id="content"
+            class="textarea content-input"
+            rows="18"
+            formControlName="content"
+            [class.invalid]="form.controls.content.touched && form.controls.content.invalid"
+          ></textarea>
+          @if (form.controls.content.touched && form.controls.content.invalid) {
+            <span class="field-error">The article cannot be empty</span>
+          }
+          @if (serverFieldErrors()['content']) {
+            <span class="field-error">{{ serverFieldErrors()['content'] }}</span>
+          }
+          <span class="muted small">
+            Plain text. Blank lines become paragraphs.
+          </span>
+        </div>
+
+        <div class="two-up">
+          <div class="field">
+            <label for="category">Category</label>
+            <select id="category" class="select" formControlName="categorySlug">
+              <option value="">No category</option>
+              @for (category of categories(); track category.id) {
+                <option [value]="category.slug">{{ category.name }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="tags">Tags</label>
+            <input
+              id="tags"
+              class="input"
+              type="text"
+              list="tag-suggestions"
+              placeholder="Java, Spring Boot, Learning"
+              formControlName="tags"
+            />
+            <datalist id="tag-suggestions">
+              @for (tag of tagSuggestions(); track tag.id) {
+                <option [value]="tag.name"></option>
+              }
+            </datalist>
+            <span class="muted small">Separate with commas. Up to ten.</span>
+          </div>
+        </div>
+
+        <fieldset class="field status">
+          <legend>Status</legend>
+          <label class="radio">
+            <input type="radio" value="DRAFT" formControlName="status" />
+            <span>
+              <strong>Draft</strong>
+              <span class="muted small">Only you can see it.</span>
+            </span>
+          </label>
+          <label class="radio">
+            <input type="radio" value="PUBLISHED" formControlName="status" />
+            <span>
+              <strong>Published</strong>
+              <span class="muted small">Appears in the feed for everyone.</span>
+            </span>
+          </label>
+        </fieldset>
+
+        <div class="field">
+          <label for="cover">Cover image <span class="muted small">(optional)</span></label>
+
+          @if (pendingPreview()) {
+            <img class="cover-preview" [src]="pendingPreview()" alt="Chosen cover image" />
+            <span class="muted small">Uploaded when you save.</span>
+          } @else if (coverUrl()) {
+            <img class="cover-preview" [src]="coverUrl()" alt="Current cover image" />
+            <button type="button" class="btn btn-ghost btn-sm self-start" (click)="removeCover()">
+              Remove cover
+            </button>
+          }
+
+          <input
+            id="cover"
+            class="input"
+            type="file"
+            accept="image/jpeg,image/png,image/gif"
+            (change)="onCoverSelected($event)"
+          />
+          <span class="muted small">
+            JPEG, PNG or GIF, up to 5 MB. Large images are scaled down on the server.
+          </span>
+        </div>
+
+        <div class="actions">
+          <button class="btn" type="submit" [disabled]="saving()">
+            {{ saving() ? 'Saving…' : editing() ? 'Save changes' : 'Save article' }}
+          </button>
+
+          @if (editing()) {
+            <button class="btn btn-danger" type="button" [disabled]="saving()" (click)="remove()">
+              Delete article
+            </button>
+          }
+
+          <a class="btn btn-ghost" routerLink="/my-articles">Cancel</a>
+        </div>
+      </form>
+    }
+  </div>
+</div>

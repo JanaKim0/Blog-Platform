@@ -1,0 +1,84 @@
+@use 'theme' as *;
+
+.editor {
+  max-width: $reading-width;
+  margin: 0 auto;
+}
+
+.editor-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-3;
+  margin-bottom: $space-5;
+
+  h1 {
+    margin: 0;
+  }
+}
+
+.content-input {
+  /* A monospace-ish rhythm is unhelpful for prose; what matters is a comfortable
+     line length and generous line height. */
+  min-height: 20rem;
+  line-height: 1.7;
+}
+
+.two-up {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-4;
+}
+
+.status {
+  border: 1px solid $border;
+  border-radius: $radius;
+  padding: $space-4;
+  margin: 0;
+
+  legend {
+    padding: 0 $space-2;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+}
+
+.radio {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-3;
+  padding: $space-2 0;
+  cursor: pointer;
+
+  span {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.cover-preview {
+  width: 100%;
+  max-height: 16rem;
+  object-fit: cover;
+  border: 1px solid $border;
+  border-radius: $radius;
+}
+
+.self-start {
+  align-self: flex-start;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $space-3;
+  padding-top: $space-4;
+  border-top: 1px solid $border;
+}
+
+@media (max-width: 640px) {
+  .two-up {
+    grid-template-columns: 1fr;
+  }
+}

@@ -9,10 +9,14 @@
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
         Latest
       </a>
+      @if (auth.isSignedIn()) {
+        <a routerLink="/my-articles" routerLinkActive="active">My articles</a>
+      }
     </nav>
 
     <div class="actions">
       @if (auth.isSignedIn()) {
+        <a class="btn btn-sm" routerLink="/write">Write</a>
         <span class="account">
           @if (auth.currentUser()?.avatarUrl) {
             <img class="avatar" [src]="auth.currentUser()!.avatarUrl" alt="" />
