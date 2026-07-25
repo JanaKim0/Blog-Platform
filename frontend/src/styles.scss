@@ -1,1 +1,280 @@
-/* You can add global styles to this file, and also import other style files */
+@use 'theme' as *;
+
+/* =============================================================
+   Global base styles and the handful of shared classes every
+   page reuses: buttons, form fields, cards, badges.
+   ============================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  background: $page-bg;
+  color: $text;
+  font-family: $font-body;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: $font-heading;
+  font-weight: 600;
+  line-height: 1.25;
+  margin: 0 0 $space-3;
+  color: $text;
+}
+
+h1 {
+  font-size: 2rem;
+}
+h2 {
+  font-size: 1.5rem;
+}
+h3 {
+  font-size: 1.2rem;
+}
+
+p {
+  margin: 0 0 $space-4;
+}
+
+a {
+  color: $primary-ink;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* ---- Layout helpers ---- */
+
+.container {
+  width: 100%;
+  max-width: $content-width;
+  margin: 0 auto;
+  padding: 0 $space-4;
+}
+
+.page {
+  padding: $space-6 0 $space-7;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+}
+
+.muted {
+  color: $text-muted;
+}
+
+.small {
+  font-size: 0.875rem;
+}
+
+/* ---- Buttons ---- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  padding: 0.6rem 1.2rem;
+  border: 1px solid transparent;
+  border-radius: $radius-pill;
+  background: $primary;
+  /* Dark plum, not white: on a powder pink, white labels only reach about
+     3:1 and look washed out. See the note in _theme.scss. */
+  color: $on-primary;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+
+  &:hover:not(:disabled) {
+    background: $primary-dark;
+  }
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  /* A visible focus ring matters for keyboard users; it uses the accent
+     colour so it does not read as an error. */
+  &:focus-visible {
+    outline: 2px solid $primary-ink;
+    outline-offset: 2px;
+  }
+}
+
+.btn-secondary {
+  background: $surface;
+  color: $primary-ink;
+  border-color: $border-strong;
+
+  &:hover:not(:disabled) {
+    background: $surface-alt;
+  }
+}
+
+.btn-ghost {
+  background: transparent;
+  color: $text-muted;
+  border-color: transparent;
+
+  &:hover:not(:disabled) {
+    background: $surface-alt;
+    color: $primary-ink;
+  }
+}
+
+.btn-danger {
+  background: $danger;
+  /* This one is dark enough for white text, and white reads as a warning. */
+  color: $white;
+
+  &:hover:not(:disabled) {
+    background: $danger-dark;
+  }
+}
+
+.btn-sm {
+  padding: 0.35rem 0.85rem;
+  font-size: 0.875rem;
+}
+
+/* ---- Cards and panels ---- */
+
+.card {
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: $radius;
+  box-shadow: $shadow-sm;
+}
+
+.panel {
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: $radius-lg;
+  box-shadow: $shadow;
+  padding: $space-6;
+}
+
+/* ---- Forms ---- */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  /* Without this a field inside a flex row refuses to shrink and pushes the
+     row wider than its container. */
+  min-width: 0;
+}
+
+.field label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: $text;
+}
+
+.input,
+.textarea,
+.select {
+  width: 100%;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid $border-strong;
+  border-radius: $radius-sm;
+  background: $surface;
+  color: $text;
+  font: inherit;
+
+  &::placeholder {
+    color: $text-muted;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $primary;
+    box-shadow: 0 0 0 3px $focus-ring;
+  }
+
+  &.invalid {
+    border-color: $danger;
+  }
+}
+
+.textarea {
+  min-height: 8rem;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.field-error {
+  color: $danger;
+  font-size: 0.8125rem;
+}
+
+.form-error {
+  padding: $space-3 $space-4;
+  border: 1px solid $danger-border;
+  border-radius: $radius-sm;
+  background: $danger-bg;
+  color: $danger;
+  font-size: 0.9rem;
+}
+
+/* ---- Badges (categories, tags) ---- */
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.7rem;
+  border-radius: $radius-pill;
+  background: $surface-alt;
+  border: 1px solid $border;
+  color: $primary-ink;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge-plain {
+  background: transparent;
+  color: $text-muted;
+  font-weight: 500;
+}
+
+/* ---- Empty states ---- */
+
+.empty {
+  padding: $space-7 $space-4;
+  text-align: center;
+  color: $text-muted;
+}

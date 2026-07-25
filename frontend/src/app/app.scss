@@ -1,0 +1,11 @@
+/* The shell is a column so the footer sits at the bottom even on a short page,
+   instead of floating halfway up the screen. */
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.site-main {
+  flex: 1 0 auto;
+}

@@ -1,0 +1,33 @@
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" routerLink="/">
+      <span class="brand-mark">✦</span>
+      <span class="brand-name">Blog&nbsp;Platform</span>
+    </a>
+
+    <nav class="nav">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        Latest
+      </a>
+    </nav>
+
+    <div class="actions">
+      @if (auth.isSignedIn()) {
+        <span class="account">
+          @if (auth.currentUser()?.avatarUrl) {
+            <img class="avatar" [src]="auth.currentUser()!.avatarUrl" alt="" />
+          } @else {
+            <span class="avatar avatar-placeholder">
+              {{ (auth.currentUser()?.displayName || '?').charAt(0) }}
+            </span>
+          }
+          <span class="account-name">{{ auth.currentUser()?.displayName }}</span>
+        </span>
+        <button type="button" class="btn btn-ghost btn-sm" (click)="signOut()">Sign out</button>
+      } @else {
+        <a class="btn btn-ghost btn-sm" routerLink="/login">Sign in</a>
+        <a class="btn btn-sm" routerLink="/register">Join</a>
+      }
+    </div>
+  </div>
+</header>

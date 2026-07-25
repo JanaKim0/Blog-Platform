@@ -1,0 +1,50 @@
+<div class="container page auth-page">
+  <div class="panel auth-panel">
+    <h1>Welcome back</h1>
+    <p class="muted">Sign in to write, comment and follow the authors you like.</p>
+
+    <form class="stack" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      @if (error()) {
+        <p class="form-error" role="alert">{{ error() }}</p>
+      }
+
+      <div class="field">
+        <label for="login">Username or email</label>
+        <input
+          id="login"
+          class="input"
+          type="text"
+          autocomplete="username"
+          formControlName="login"
+          [class.invalid]="form.controls.login.touched && form.controls.login.invalid"
+        />
+        @if (form.controls.login.touched && form.controls.login.invalid) {
+          <span class="field-error">Enter your username or email</span>
+        }
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          class="input"
+          type="password"
+          autocomplete="current-password"
+          formControlName="password"
+          [class.invalid]="form.controls.password.touched && form.controls.password.invalid"
+        />
+        @if (form.controls.password.touched && form.controls.password.invalid) {
+          <span class="field-error">Enter your password</span>
+        }
+      </div>
+
+      <button class="btn" type="submit" [disabled]="submitting()">
+        {{ submitting() ? 'Signing in…' : 'Sign in' }}
+      </button>
+    </form>
+
+    <p class="muted small switch">
+      No account yet? <a routerLink="/register">Create one</a>
+    </p>
+  </div>
+</div>

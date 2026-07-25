@@ -1,0 +1,99 @@
+<div class="container page auth-page">
+  <div class="panel auth-panel">
+    <h1>Create an account</h1>
+    <p class="muted">Start your own blog and follow the people you want to read.</p>
+
+    <form class="stack" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      @if (error()) {
+        <p class="form-error" role="alert">{{ error() }}</p>
+      }
+
+      <div class="field">
+        <label for="username">Username</label>
+        <input
+          id="username"
+          class="input"
+          type="text"
+          autocomplete="username"
+          formControlName="username"
+          [class.invalid]="form.controls.username.touched && form.controls.username.invalid"
+        />
+        <span class="field-hint muted small">
+          Letters, digits, dots, underscores and hyphens. This appears in your profile address.
+        </span>
+        @if (form.controls.username.touched && form.controls.username.invalid) {
+          <span class="field-error">
+            @if (form.controls.username.hasError('required')) {
+              A username is required
+            } @else if (form.controls.username.hasError('pattern')) {
+              Only letters, digits, dots, underscores and hyphens are allowed
+            } @else {
+              Use between 3 and 50 characters
+            }
+          </span>
+        }
+        @if (serverFieldErrors()['username']) {
+          <span class="field-error">{{ serverFieldErrors()['username'] }}</span>
+        }
+      </div>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          class="input"
+          type="email"
+          autocomplete="email"
+          formControlName="email"
+          [class.invalid]="form.controls.email.touched && form.controls.email.invalid"
+        />
+        @if (form.controls.email.touched && form.controls.email.invalid) {
+          <span class="field-error">Enter a valid email address</span>
+        }
+        @if (serverFieldErrors()['email']) {
+          <span class="field-error">{{ serverFieldErrors()['email'] }}</span>
+        }
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          class="input"
+          type="password"
+          autocomplete="new-password"
+          formControlName="password"
+          [class.invalid]="form.controls.password.touched && form.controls.password.invalid"
+        />
+        @if (form.controls.password.touched && form.controls.password.invalid) {
+          <span class="field-error">Use at least 8 characters</span>
+        }
+        @if (serverFieldErrors()['password']) {
+          <span class="field-error">{{ serverFieldErrors()['password'] }}</span>
+        }
+      </div>
+
+      <div class="field">
+        <label for="displayName">Display name <span class="muted small">(optional)</span></label>
+        <input
+          id="displayName"
+          class="input"
+          type="text"
+          autocomplete="name"
+          formControlName="displayName"
+        />
+        <span class="field-hint muted small">
+          Shown next to your articles. Your username is used if you leave this empty.
+        </span>
+      </div>
+
+      <button class="btn" type="submit" [disabled]="submitting()">
+        {{ submitting() ? 'Creating your account…' : 'Create account' }}
+      </button>
+    </form>
+
+    <p class="muted small switch">
+      Already have an account? <a routerLink="/login">Sign in</a>
+    </p>
+  </div>
+</div>

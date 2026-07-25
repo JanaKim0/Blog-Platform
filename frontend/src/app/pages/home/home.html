@@ -1,0 +1,21 @@
+<div class="container page">
+  <section class="hero">
+    @if (auth.isSignedIn()) {
+      <h1>Hello, {{ auth.currentUser()?.displayName }}</h1>
+      <p class="muted">
+        You are signed in. The reading feed, the editor and your profile arrive in the
+        stages that follow.
+      </p>
+    } @else {
+      <h1>Write something worth reading</h1>
+      <p class="lead muted">
+        A place to publish your own articles, read other people's blogs, follow the
+        authors you like and talk about what they wrote.
+      </p>
+      <div class="hero-actions">
+        <a class="btn" routerLink="/register">Create an account</a>
+        <a class="btn btn-secondary" routerLink="/login">Sign in</a>
+      </div>
+    }
+  </section>
+</div>

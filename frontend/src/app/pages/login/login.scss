@@ -1,0 +1,24 @@
+@use 'theme' as *;
+
+.auth-page {
+  display: flex;
+  justify-content: center;
+}
+
+.auth-panel {
+  width: 100%;
+  max-width: 26rem;
+
+  h1 {
+    margin-bottom: $space-2;
+  }
+
+  form {
+    margin-top: $space-5;
+  }
+}
+
+.switch {
+  margin: $space-5 0 0;
+  text-align: center;
+}

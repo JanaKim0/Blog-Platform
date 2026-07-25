@@ -1,0 +1,21 @@
+@use 'theme' as *;
+
+.site-footer {
+  margin-top: auto;
+  padding: $space-5 0;
+  border-top: 1px solid $border;
+  background: $surface;
+  text-align: center;
+
+  p {
+    margin: 0;
+    color: $text-muted;
+    font-size: 0.875rem;
+  }
+
+  a {
+    margin-left: $space-2;
+    color: $primary-ink;
+    font-weight: 600;
+  }
+}
