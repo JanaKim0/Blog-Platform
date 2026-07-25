@@ -10,7 +10,7 @@ searched and filtered, and are served through a paginated feed.
 
 ## Features
 
-- [ ] Registration and login (stateless JWT)
+- [x] Registration and login (stateless JWT)
 - [ ] User profile and profile editing
 - [ ] Creating, editing and deleting articles
 - [ ] Image upload (article covers, avatars)
