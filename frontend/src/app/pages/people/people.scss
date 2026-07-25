@@ -1,0 +1,37 @@
+@use 'theme' as *;
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: $space-4;
+  margin-bottom: $space-5;
+
+  h1 {
+    margin: 0;
+  }
+}
+
+.search {
+  display: flex;
+  gap: $space-2;
+
+  .input {
+    width: 16rem;
+    max-width: 100%;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: $space-3;
+}
+
+@media (max-width: 640px) {
+  .search,
+  .search .input {
+    width: 100%;
+  }
+}

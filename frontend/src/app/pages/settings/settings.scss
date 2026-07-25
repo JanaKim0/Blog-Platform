@@ -1,0 +1,79 @@
+@use 'theme' as *;
+
+.settings {
+  max-width: $reading-width;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: $space-3;
+  margin-bottom: $space-5;
+
+  h1 {
+    margin: 0;
+  }
+}
+
+.panel {
+  margin-bottom: $space-5;
+
+  h2 {
+    margin-top: 0;
+  }
+}
+
+.avatar-row {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-5;
+}
+
+.avatar-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-3;
+
+  p {
+    width: 100%;
+    margin: 0;
+  }
+}
+
+/* A file input styled as a button: the native control cannot be styled, so the
+   label carries the look and the input itself is hidden inside it. */
+.file-button {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+
+  input[type='file'] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+}
+
+.form-success {
+  padding: $space-3 $space-4;
+  border: 1px solid $border-strong;
+  border-radius: $radius-sm;
+  background: $surface-alt;
+  color: $primary-ink;
+  font-size: 0.9rem;
+}
+
+.self-start {
+  align-self: flex-start;
+}
+
+@media (max-width: 640px) {
+  .avatar-row {
+    flex-wrap: wrap;
+    gap: $space-4;
+  }
+}

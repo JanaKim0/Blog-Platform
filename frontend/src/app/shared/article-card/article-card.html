@@ -41,12 +41,7 @@
     }
 
     <footer class="card-footer">
-      <!-- Filters the feed by this author. Stage 12 points it at their profile. -->
-      <a
-        class="author"
-        [routerLink]="['/']"
-        [queryParams]="{ author: article().author.username }"
-      >
+      <a class="author" [routerLink]="['/authors', article().author.username]">
         <app-avatar
           size="sm"
           [url]="article().author.avatarUrl"

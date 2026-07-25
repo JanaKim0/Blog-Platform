@@ -10,14 +10,16 @@
         Latest
       </a>
       @if (auth.isSignedIn()) {
+        <a routerLink="/feed" routerLinkActive="active">My feed</a>
         <a routerLink="/my-articles" routerLinkActive="active">My articles</a>
       }
+      <a routerLink="/people" routerLinkActive="active">People</a>
     </nav>
 
     <div class="actions">
       @if (auth.isSignedIn()) {
         <a class="btn btn-sm" routerLink="/write">Write</a>
-        <span class="account">
+        <a class="account" routerLink="/settings">
           @if (auth.currentUser()?.avatarUrl) {
             <img class="avatar" [src]="auth.currentUser()!.avatarUrl" alt="" />
           } @else {
@@ -26,7 +28,7 @@
             </span>
           }
           <span class="account-name">{{ auth.currentUser()?.displayName }}</span>
-        </span>
+        </a>
         <button type="button" class="btn btn-ghost btn-sm" (click)="signOut()">Sign out</button>
       } @else {
         <a class="btn btn-ghost btn-sm" routerLink="/login">Sign in</a>

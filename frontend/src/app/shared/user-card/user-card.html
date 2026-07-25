@@ -1,0 +1,7 @@
+<a class="card user-card" [routerLink]="['/authors', user().username]">
+  <app-avatar [url]="user().avatarUrl" [name]="user().displayName" />
+  <span class="names">
+    <span class="display-name">{{ user().displayName }}</span>
+    <span class="username muted small">&#64;{{ user().username }}</span>
+  </span>
+</a>

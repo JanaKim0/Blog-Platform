@@ -1,0 +1,50 @@
+<div class="container page">
+  <header class="head">
+    <h1>People</h1>
+
+    <form class="search" (ngSubmit)="search()">
+      <label class="visually-hidden" for="people-search">Search people</label>
+      <input
+        id="people-search"
+        class="input"
+        type="search"
+        name="peopleSearch"
+        placeholder="Search by name…"
+        [(ngModel)]="searchText"
+      />
+      <button class="btn btn-sm" type="submit">Search</button>
+    </form>
+  </header>
+
+  @if (error()) {
+    <p class="form-error" role="alert">{{ error() }}</p>
+  }
+
+  @if (loading()) {
+    <p class="empty">Loading…</p>
+  } @else if (page(); as result) {
+    @if (result.content.length === 0) {
+      <p class="empty">
+        @if (query()) {
+          Nobody matches “{{ query() }}”.
+        } @else {
+          There is nobody here yet.
+        }
+      </p>
+    } @else {
+      <div class="grid">
+        @for (person of result.content; track person.id) {
+          <app-user-card [user]="person" />
+        }
+      </div>
+
+      <app-pagination
+        [page]="result.page"
+        [totalPages]="result.totalPages"
+        [first]="result.first"
+        [last]="result.last"
+        (pageChange)="goToPage($event)"
+      />
+    }
+  }
+</div>

@@ -41,7 +41,7 @@
         }
 
         <div class="byline">
-          <a class="author" [routerLink]="['/']" [queryParams]="{ author: post.author.username }">
+          <a class="author" [routerLink]="['/authors', post.author.username]">
             <app-avatar [url]="post.author.avatarUrl" [name]="post.author.displayName" />
             <span class="author-name">{{ post.author.displayName }}</span>
           </a>

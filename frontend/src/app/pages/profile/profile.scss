@@ -1,0 +1,77 @@
+@use 'theme' as *;
+
+.profile-head {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-5;
+  margin-bottom: $space-6;
+}
+
+.identity {
+  flex: 1 1 auto;
+  min-width: 0;
+
+  h1 {
+    margin: 0;
+  }
+}
+
+.username {
+  margin: 0 0 $space-3;
+}
+
+.bio {
+  /* The author's own line breaks are kept; it is plain text, not markup. */
+  white-space: pre-wrap;
+  margin-bottom: $space-3;
+}
+
+.counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-4;
+  margin-top: $space-3;
+}
+
+.count {
+  color: $text-muted;
+  font-size: 0.9375rem;
+
+  strong {
+    color: $text;
+  }
+}
+
+a.count:hover {
+  color: $primary-ink;
+  text-decoration: none;
+
+  strong {
+    color: $primary-ink;
+  }
+}
+
+.profile-actions {
+  flex: 0 0 auto;
+}
+
+.articles h2 {
+  margin-bottom: $space-4;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: $space-4;
+}
+
+@media (max-width: 640px) {
+  .profile-head {
+    flex-wrap: wrap;
+    gap: $space-4;
+  }
+
+  .profile-actions {
+    width: 100%;
+  }
+}

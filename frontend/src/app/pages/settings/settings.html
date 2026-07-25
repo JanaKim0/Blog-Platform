@@ -1,0 +1,162 @@
+<div class="container page settings">
+  <header class="head">
+    <h1>Your account</h1>
+    @if (auth.currentUser(); as me) {
+      <a class="btn btn-ghost btn-sm" [routerLink]="['/authors', me.username]">
+        View public profile
+      </a>
+    }
+  </header>
+
+  <section class="panel">
+    <h2>Picture</h2>
+    <div class="avatar-row">
+      <app-avatar
+        size="lg"
+        [url]="avatarPreview() ?? auth.currentUser()?.avatarUrl ?? null"
+        [name]="auth.currentUser()?.displayName ?? ''"
+      />
+
+      <div class="avatar-controls">
+        <label class="btn btn-secondary btn-sm file-button">
+          {{ avatarBusy() ? 'Uploading…' : 'Choose a picture' }}
+          <input
+            type="file"
+            accept="image/jpeg,image/png,image/gif"
+            [disabled]="avatarBusy()"
+            (change)="onAvatarSelected($event)"
+          />
+        </label>
+
+        @if (auth.currentUser()?.avatarUrl) {
+          <button
+            type="button"
+            class="btn btn-ghost btn-sm"
+            [disabled]="avatarBusy()"
+            (click)="removeAvatar()"
+          >
+            Remove
+          </button>
+        }
+
+        <p class="muted small">
+          JPEG, PNG or GIF. Large pictures are scaled down on the server, so a photo
+          straight from a phone is fine.
+        </p>
+        @if (avatarError()) {
+          <p class="form-error" role="alert">{{ avatarError() }}</p>
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Profile</h2>
+    <form class="stack" [formGroup]="profileForm" (ngSubmit)="saveProfile()" novalidate>
+      @if (profileError()) {
+        <p class="form-error" role="alert">{{ profileError() }}</p>
+      }
+      @if (profileSaved()) {
+        <p class="form-success" role="status">Your profile has been saved.</p>
+      }
+
+      <div class="field">
+        <label for="displayName">Display name</label>
+        <input
+          id="displayName"
+          class="input"
+          type="text"
+          maxlength="100"
+          formControlName="displayName"
+        />
+        <span class="muted small">
+          Shown next to your articles. Your username is used if you leave this empty.
+        </span>
+      </div>
+
+      <div class="field">
+        <label for="bio">About you</label>
+        <textarea id="bio" class="textarea" rows="4" maxlength="1000" formControlName="bio">
+        </textarea>
+      </div>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          class="input"
+          type="email"
+          autocomplete="email"
+          formControlName="email"
+          [class.invalid]="profileForm.controls.email.touched && profileForm.controls.email.invalid"
+        />
+        @if (profileForm.controls.email.touched && profileForm.controls.email.invalid) {
+          <span class="field-error">Enter a valid email address</span>
+        }
+        @if (profileFieldErrors()['email']) {
+          <span class="field-error">{{ profileFieldErrors()['email'] }}</span>
+        }
+        <span class="muted small">Never shown on your public profile.</span>
+      </div>
+
+      <div class="field">
+        <label>Username</label>
+        <input class="input" type="text" [value]="auth.currentUser()?.username" disabled />
+        <span class="muted small">
+          Your username is part of your profile address, so it cannot be changed - every
+          link to you would break.
+        </span>
+      </div>
+
+      <button class="btn self-start" type="submit" [disabled]="savingProfile()">
+        {{ savingProfile() ? 'Saving…' : 'Save profile' }}
+      </button>
+    </form>
+  </section>
+
+  <section class="panel">
+    <h2>Password</h2>
+    <form class="stack" [formGroup]="passwordForm" (ngSubmit)="changePassword()" novalidate>
+      @if (passwordError()) {
+        <p class="form-error" role="alert">{{ passwordError() }}</p>
+      }
+      @if (passwordChanged()) {
+        <p class="form-success" role="status">
+          Your password has been changed. The old one no longer works.
+        </p>
+      }
+
+      <div class="field">
+        <label for="currentPassword">Current password</label>
+        <input
+          id="currentPassword"
+          class="input"
+          type="password"
+          autocomplete="current-password"
+          formControlName="currentPassword"
+        />
+      </div>
+
+      <div class="field">
+        <label for="newPassword">New password</label>
+        <input
+          id="newPassword"
+          class="input"
+          type="password"
+          autocomplete="new-password"
+          formControlName="newPassword"
+          [class.invalid]="
+            passwordForm.controls.newPassword.touched && passwordForm.controls.newPassword.invalid
+          "
+        />
+        @if (passwordForm.controls.newPassword.touched && passwordForm.controls.newPassword.invalid) {
+          <span class="field-error">Use between 8 and 72 characters</span>
+        }
+      </div>
+
+      <button class="btn self-start" type="submit" [disabled]="changingPassword()">
+        {{ changingPassword() ? 'Changing…' : 'Change password' }}
+      </button>
+    </form>
+  </section>
+</div>

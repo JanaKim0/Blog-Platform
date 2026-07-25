@@ -1,0 +1,40 @@
+<div class="container page">
+  <header class="head">
+    <h1>{{ heading() }}</h1>
+    <a class="btn btn-ghost btn-sm" [routerLink]="['/authors', username()]">
+      ← Back to &#64;{{ username() }}
+    </a>
+  </header>
+
+  @if (error()) {
+    <p class="form-error" role="alert">{{ error() }}</p>
+  }
+
+  @if (loading()) {
+    <p class="empty">Loading…</p>
+  } @else if (page(); as result) {
+    @if (result.content.length === 0) {
+      <p class="empty">
+        @if (mode() === 'followers') {
+          Nobody follows &#64;{{ username() }} yet.
+        } @else {
+          &#64;{{ username() }} does not follow anybody yet.
+        }
+      </p>
+    } @else {
+      <div class="grid">
+        @for (person of result.content; track person.id) {
+          <app-user-card [user]="person" />
+        }
+      </div>
+
+      <app-pagination
+        [page]="result.page"
+        [totalPages]="result.totalPages"
+        [first]="result.first"
+        [last]="result.last"
+        (pageChange)="load($event)"
+      />
+    }
+  }
+</div>

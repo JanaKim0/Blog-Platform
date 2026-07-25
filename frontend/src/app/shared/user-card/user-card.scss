@@ -1,0 +1,35 @@
+@use 'theme' as *;
+
+.user-card {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-3 $space-4;
+  color: $text;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+
+  &:hover {
+    text-decoration: none;
+    border-color: $border-strong;
+    box-shadow: $shadow;
+  }
+}
+
+.names {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.display-name {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.username {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

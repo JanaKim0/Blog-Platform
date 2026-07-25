@@ -1,0 +1,90 @@
+<div class="container page">
+  @if (loading()) {
+    <p class="empty">Loading…</p>
+  } @else if (notFound()) {
+    <div class="empty">
+      <h1>No such author</h1>
+      <p>Nobody here goes by that name.</p>
+      <a class="btn btn-secondary" routerLink="/people">Browse people</a>
+    </div>
+  } @else if (profile(); as person) {
+    <header class="panel profile-head">
+      <app-avatar size="lg" [url]="person.avatarUrl" [name]="person.displayName" />
+
+      <div class="identity">
+        <h1>{{ person.displayName }}</h1>
+        <p class="username muted">&#64;{{ person.username }}</p>
+        @if (person.bio) {
+          <p class="bio">{{ person.bio }}</p>
+        }
+        <p class="small muted">Joined {{ person.joinedAt | date: 'longDate' }}</p>
+
+        <div class="counts">
+          <span class="count">
+            <strong>{{ person.articlesCount }}</strong>
+            {{ person.articlesCount === 1 ? 'article' : 'articles' }}
+          </span>
+          <a class="count" [routerLink]="['/authors', person.username, 'followers']">
+            <strong>{{ person.followersCount }}</strong>
+            {{ person.followersCount === 1 ? 'follower' : 'followers' }}
+          </a>
+          <a class="count" [routerLink]="['/authors', person.username, 'following']">
+            <strong>{{ person.followingCount }}</strong> following
+          </a>
+        </div>
+      </div>
+
+      <div class="profile-actions">
+        @if (isMe()) {
+          <a class="btn btn-secondary" routerLink="/settings">Edit profile</a>
+        } @else {
+          <button
+            type="button"
+            class="btn"
+            [class.btn-secondary]="person.following"
+            [disabled]="followBusy()"
+            (click)="toggleFollow()"
+          >
+            {{ person.following ? 'Following' : 'Follow' }}
+          </button>
+        }
+      </div>
+    </header>
+
+    @if (error()) {
+      <p class="form-error" role="alert">{{ error() }}</p>
+    }
+
+    <section class="articles">
+      <h2>Articles</h2>
+
+      @if (articlePage(); as result) {
+        @if (result.content.length === 0) {
+          <p class="empty">
+            @if (isMe()) {
+              You have not published anything yet.
+            } @else {
+              {{ person.displayName }} has not published anything yet.
+            }
+          </p>
+        } @else {
+          <div class="grid">
+            @for (article of result.content; track article.id) {
+              <app-article-card [article]="article" />
+            }
+          </div>
+
+          <app-pagination
+            [page]="result.page"
+            [totalPages]="result.totalPages"
+            [first]="result.first"
+            [last]="result.last"
+            (pageChange)="onArticlePage($event)"
+          />
+        }
+      } @else {
+        <p class="empty">Loading articles…</p>
+      }
+    </section>
+  }
+</div>

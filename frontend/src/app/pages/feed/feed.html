@@ -1,0 +1,41 @@
+<div class="container page">
+  <header class="head">
+    <h1>My feed</h1>
+    <p class="muted small">Published articles by the authors you follow.</p>
+  </header>
+
+  @if (error()) {
+    <p class="form-error" role="alert">{{ error() }}</p>
+  }
+
+  @if (loading()) {
+    <p class="empty">Loading…</p>
+  } @else if (page(); as result) {
+    @if (result.content.length === 0) {
+      <!-- An empty feed means "follow somebody", not "there is nothing to read" -
+           so it points at the people page rather than showing the whole site. -->
+      <div class="empty">
+        <p>Your feed is empty.</p>
+        <p class="small">Follow a few authors and their articles will show up here.</p>
+        <div class="row-center">
+          <a class="btn" routerLink="/people">Find people to follow</a>
+          <a class="btn btn-secondary" routerLink="/">Browse the latest articles</a>
+        </div>
+      </div>
+    } @else {
+      <div class="grid">
+        @for (article of result.content; track article.id) {
+          <app-article-card [article]="article" />
+        }
+      </div>
+
+      <app-pagination
+        [page]="result.page"
+        [totalPages]="result.totalPages"
+        [first]="result.first"
+        [last]="result.last"
+        (pageChange)="load($event)"
+      />
+    }
+  }
+</div>

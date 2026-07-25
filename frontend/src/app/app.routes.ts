@@ -13,6 +13,41 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/home/home').then((m) => m.Home),
   },
   {
+    path: 'feed',
+    title: 'My feed · Blog Platform',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/feed/feed').then((m) => m.Feed),
+  },
+  {
+    path: 'people',
+    title: 'People · Blog Platform',
+    loadComponent: () => import('./pages/people/people').then((m) => m.People),
+  },
+  {
+    path: 'settings',
+    title: 'Your account · Blog Platform',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/settings/settings').then((m) => m.Settings),
+  },
+  {
+    // The two connection lists share one component; the route says which it is.
+    path: 'authors/:username/followers',
+    title: 'Followers · Blog Platform',
+    data: { mode: 'followers' },
+    loadComponent: () => import('./pages/connections/connections').then((m) => m.Connections),
+  },
+  {
+    path: 'authors/:username/following',
+    title: 'Following · Blog Platform',
+    data: { mode: 'following' },
+    loadComponent: () => import('./pages/connections/connections').then((m) => m.Connections),
+  },
+  {
+    path: 'authors/:username',
+    title: 'Author · Blog Platform',
+    loadComponent: () => import('./pages/profile/profile').then((m) => m.Profile),
+  },
+  {
     path: 'write',
     title: 'Write an article · Blog Platform',
     canActivate: [authGuard],
