@@ -16,7 +16,7 @@ searched and filtered, and are served through a paginated feed.
 - [ ] Image upload (article covers, avatars)
 - [ ] Comments
 - [ ] Likes
-- [ ] Following authors
+- [x] Following authors
 - [ ] Article search
 - [x] User search
 - [ ] Categories and tags

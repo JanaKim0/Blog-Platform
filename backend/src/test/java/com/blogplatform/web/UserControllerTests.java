@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.blogplatform.ApiIntegrationTest;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -16,25 +17,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import javax.imageio.ImageIO;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
-import tools.jackson.databind.ObjectMapper;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@Transactional
-class UserControllerTests {
-
-	@Autowired
-	private MockMvc mockMvc;
-	@Autowired
-	private ObjectMapper objectMapper;
+class UserControllerTests extends ApiIntegrationTest {
 
 	@Value("${app.storage.location}")
 	private String storageLocation;
@@ -307,17 +294,5 @@ class UserControllerTests {
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 		ImageIO.write(image, "png", bytes);
 		return new MockMultipartFile("file", "avatar.png", "image/png", bytes.toByteArray());
-	}
-
-	/** Registers an account and returns its token. */
-	private String register(String username, String email) throws Exception {
-		String body = mockMvc.perform(post("/api/auth/register")
-						.contentType(MediaType.APPLICATION_JSON)
-						.content("""
-								{"username":"%s","email":"%s","password":"correct-horse"}
-								""".formatted(username, email)))
-				.andExpect(status().isCreated())
-				.andReturn().getResponse().getContentAsString();
-		return objectMapper.readTree(body).get("token").asText();
 	}
 }

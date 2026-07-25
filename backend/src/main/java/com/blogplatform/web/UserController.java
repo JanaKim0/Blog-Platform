@@ -44,10 +44,11 @@ public class UserController {
 		return userService.search(query, pageable);
 	}
 
-	/** An author's public profile. Public. */
+	/** An author's public profile. Public, but richer when signed in. */
 	@GetMapping("/{username}")
-	public ProfileResponse profile(@PathVariable String username) {
-		return userService.getProfile(username);
+	public ProfileResponse profile(@PathVariable String username,
+			@AuthenticationPrincipal AppUserDetails principal) {
+		return userService.getProfile(username, principal == null ? null : principal.getId());
 	}
 
 	@PutMapping("/me")

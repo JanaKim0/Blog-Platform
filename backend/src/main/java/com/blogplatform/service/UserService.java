@@ -42,14 +42,21 @@ public class UserService {
 		this.imageStorage = imageStorage;
 	}
 
+	/**
+	 * @param currentUserId the signed-in visitor, or {@code null} for anonymous
+	 *                      ones - it only decides the {@code following} flag
+	 */
 	@Transactional(readOnly = true)
-	public ProfileResponse getProfile(String username) {
+	public ProfileResponse getProfile(String username, Long currentUserId) {
 		User user = users.findByUsernameIgnoreCase(username)
 				.orElseThrow(() -> new ResourceNotFoundException("No user named " + username));
+		boolean following = currentUserId != null
+				&& subscriptions.existsByFollowerIdAndAuthorId(currentUserId, user.getId());
 		return ProfileResponse.of(user,
 				articles.countByAuthorIdAndStatus(user.getId(), ArticleStatus.PUBLISHED),
 				subscriptions.countByAuthorId(user.getId()),
-				subscriptions.countByFollowerId(user.getId()));
+				subscriptions.countByFollowerId(user.getId()),
+				following);
 	}
 
 	/** An empty query lists everyone, which is what an open search page shows. */

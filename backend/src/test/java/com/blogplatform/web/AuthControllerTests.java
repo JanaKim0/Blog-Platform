@@ -6,32 +6,20 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.blogplatform.ApiIntegrationTest;
 import com.blogplatform.domain.User;
 import com.blogplatform.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
-import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.ObjectMapper;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@Transactional
-class AuthControllerTests {
+class AuthControllerTests extends ApiIntegrationTest {
 
 	private static final String REGISTER_BODY = """
 			{"username":"nora","email":"nora@example.com","password":"correct-horse",
 			 "displayName":"Nora K"}
 			""";
 
-	@Autowired
-	private MockMvc mockMvc;
-	@Autowired
-	private ObjectMapper objectMapper;
 	@Autowired
 	private UserRepository users;
 
@@ -168,7 +156,6 @@ class AuthControllerTests {
 						.contentType(MediaType.APPLICATION_JSON).content(REGISTER_BODY))
 				.andExpect(status().isCreated())
 				.andReturn().getResponse().getContentAsString();
-		JsonNode json = objectMapper.readTree(body);
-		return json.get("token").asText();
+		return readJson(body).get("token").asText();
 	}
 }
