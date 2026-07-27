@@ -6,6 +6,8 @@ Users write their own articles, read other people's blogs, follow authors,
 comment and leave likes. Articles are organised with categories and tags, can be
 searched and filtered, and are served through a paginated feed.
 
+![The feed of latest publications](docs/screenshots/home.png)
+
 ## Features
 
 - ✔ Registration and login (stateless JWT)
@@ -22,6 +24,11 @@ searched and filtered, and are served through a paginated feed.
 - ✔ Categories and tags
 - ✔ Sorting by date, likes or comments
 - ✔ Feed of the latest publications, paginated
+
+An article page carries its category and tags, the author, the like count and the
+discussion underneath it.
+
+![An article with its likes and comments](docs/screenshots/article.png)
 
 ## Getting Started
 
